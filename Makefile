@@ -1,0 +1,2 @@
+default:
+	java Main.java
