@@ -18,14 +18,14 @@ class Handler extends StringParser { // Very hacky inheritence.
 	public void handle() {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
-			System.out.print("Math > ");
+			System.out.print(" > ");
 			String in = scanner.nextLine();
 			if (in.equals("q")) {
 				break;
 			}
 			ArrayList<String> arr = parseStrings(in);
 			for (String s : arr) {
-				Parser parser = new Parser(in);
+				Parser parser = new Parser(s);
 				double result = parser.expr();
 				System.out.println(result);
 			}
@@ -65,7 +65,6 @@ class Parser {
 	public Parser(String input) {
 		instruction_pointer=0;
 		tokens = _tok_scan(input);
-		System.out.println(tokens);
 		current = tokens.get(instruction_pointer);
 		result=factor();
 	}
