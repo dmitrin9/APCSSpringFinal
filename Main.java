@@ -1,9 +1,21 @@
+import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.*;
 
 public class Main {
 	public static void main(String[] args) {
+		Handler handler = new Handler();
+		handler.handle();
+	}
+}
+
+class Handler extends StringParser { // Very hacky inheritence.
+	public Handler() {
+		super();
+	}
+
+	public void handle() {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.print("Math > ");
@@ -11,10 +23,36 @@ public class Main {
 			if (in.equals("q")) {
 				break;
 			}
-			Parser parser = new Parser(in);
-			double result = parser.expr();
-			System.out.println(result);
+			ArrayList<String> arr = parseStrings(in);
+			for (String s : arr) {
+				Parser parser = new Parser(in);
+				double result = parser.expr();
+				System.out.println(result);
+			}
 		}
+	}
+}
+
+class StringParser {
+	public static ArrayList<String> parseStrings(String s) {
+		ArrayList<String> arr = new ArrayList<String>();
+
+		StringBuilder parseBuffer = new StringBuilder();
+		boolean insideString=false;
+		for (int i=0; i<s.length(); ++i) {
+			if (s.charAt(i) == '"') {
+				insideString = !insideString;
+			}
+			if (insideString) {
+				parseBuffer.append(s.charAt(i));
+			}
+			else if (parseBuffer.length() > 0) {
+				arr.add(parseBuffer.toString());
+				parseBuffer.delete(0, parseBuffer.length());
+			}
+		}
+
+		return arr;
 	}
 }
 
